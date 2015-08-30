@@ -78,6 +78,7 @@ void loop()
 {
   unsigned long t;
   unsigned long c;
+  unsigned long dif;
   
   lcd.setCursor (0, 0);
   if (Amps<2)
@@ -99,10 +100,9 @@ void loop()
   noInterrupts();
   c=rev;
   interrupts();
-  if (c>5) {
-    unsigned long dif;
-    t=millis();
-    dif=t-timeold;    
+  t=millis();
+  dif=t-timeold;
+  if (c>5 || (dif>5000 && c>1)) {            
     rpm=60.0/((dif/c)/1000.0);
     timeold=t;
     rev=0;
@@ -115,5 +115,5 @@ void loop()
   if (rpm<10)
     lcd.print(" ");
   
-  delay(500);
+  delay(1000);
 }
